@@ -25,8 +25,9 @@
 				'id' => $row['id']
 			);
 		}
-
+		// Convertimos el objeto json en un string
 		$jsonstring = json_encode($json);
+		// Lo devolvemos como respuesta del server
 		echo $jsonstring;
 	}
 

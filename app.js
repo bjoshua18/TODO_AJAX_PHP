@@ -39,6 +39,8 @@ $(document).ready(() => {
 		// Pero lo haremos con el método post porque es más corto
 		$.post('task-add.php', postData, response => {
 			console.log(response);
+			// Reseteamos el formulario
+			$('#task-form').trigger('reset')
 		})
 
 		e.preventDefault();
