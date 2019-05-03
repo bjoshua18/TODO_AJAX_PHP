@@ -28,4 +28,19 @@ $(document).ready(() => {
 			$('#task-result').hide()
 		}
 	})
+
+	$('#task-form').submit(e => {
+		const postData = {
+			name: $('#name').val(),
+			description: $('#description').val()
+		}
+
+		// Podemos usar el método ajax para enviar los datos del task
+		// Pero lo haremos con el método post porque es más corto
+		$.post('task-add.php', postData, response => {
+			console.log(response);
+		})
+
+		e.preventDefault();
+	})
 })
