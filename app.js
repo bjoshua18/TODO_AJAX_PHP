@@ -2,6 +2,7 @@ $(document).ready(() => {
 
 	$('#task-result').hide()
 
+	// Este método se ejecuta cuando el usuario teclea en el buscador
 	$('#search').keyup(() => {
 		// Si el resultado de la búsqueda no está vacío...
 		if($('#search').val()) {
@@ -29,6 +30,7 @@ $(document).ready(() => {
 		}
 	})
 
+	// Este método se ejecuta cuando el usuario envía el formulario
 	$('#task-form').submit(e => {
 		const postData = {
 			name: $('#name').val(),
@@ -44,5 +46,12 @@ $(document).ready(() => {
 		})
 
 		e.preventDefault();
+	})
+
+	// Este se ejecuta en cuanto inicia la app
+	$.ajax({
+		url: 'task-list.php',
+		type: 'GET',
+		success: response => {console.log(response)}
 	})
 })
