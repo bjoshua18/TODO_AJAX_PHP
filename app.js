@@ -2,7 +2,10 @@ $(document).ready(() => {
 
 	$('#task-result').hide()
 
-	// Este método se ejecuta cuando el usuario teclea en el buscador
+	// Esta función se ejecuta en cuanto inicia la app
+	fetchTasks();
+
+	// Esta función se ejecuta cuando el usuario teclea en el buscador
 	$('#search').keyup(() => {
 		// Si el resultado de la búsqueda no está vacío...
 		if($('#search').val()) {
@@ -30,7 +33,7 @@ $(document).ready(() => {
 		}
 	})
 
-	// Este método se ejecuta cuando el usuario envía el formulario
+	// Esta función se ejecuta cuando el usuario envía el formulario
 	$('#task-form').submit(e => {
 		const postData = {
 			name: $('#name').val(),
@@ -40,18 +43,32 @@ $(document).ready(() => {
 		// Podemos usar el método ajax para enviar los datos del task
 		// Pero lo haremos con el método post porque es más corto
 		$.post('task-add.php', postData, response => {
-			console.log(response);
+			// Obtenemos la lista de tareas
+			fetchTasks()
 			// Reseteamos el formulario
 			$('#task-form').trigger('reset')
 		})
 
-		e.preventDefault();
+		e.preventDefault()
 	})
+})
 
-	// Este se ejecuta en cuanto inicia la app
+function fetchTasks() {
 	$.ajax({
 		url: 'task-list.php',
 		type: 'GET',
-		success: response => {console.log(response)}
-	})
-})
+		success: response => {
+			let tasks = JSON.parse(response)
+			let template = ''
+			tasks.forEach(task => {
+				template += `
+				<tr>
+					<td>${task.id}</td>
+					<td>${task.name}</td>
+					<td>${task.description}</td>
+				</tr>`;
+			});
+			$('#tasks').html(template)
+		}
+	});
+}
