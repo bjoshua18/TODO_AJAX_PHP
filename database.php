@@ -1,9 +1,9 @@
 <?php
 
-	$connection = mysqli_connect('localhost', 'root', 'password', 'tasks-app');
+	$connection = mysqli_connect('localhost', 'root', '', 'tasks-app');
 
-	if($connection) {
-		echo "Echo is connected";
-	}
+	// if($connection) {
+	// 	echo "Echo is connected";
+	// }
 
 ?>
