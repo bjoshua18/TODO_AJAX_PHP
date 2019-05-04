@@ -63,7 +63,7 @@ $(document).ready(() => {
 				tasks.forEach(task => {
 					template += `
 					<tr taskId="${task.id}">
-						<td>${task.name}</td>
+						<td><a href="#" class="task-item">${task.name}</a></td>
 						<td>${task.description}</td>
 						<td><button class="task-delete btn btn-danger">Delete</button></td>
 					</tr>`;
@@ -79,5 +79,11 @@ $(document).ready(() => {
 			let id = $(element).attr('taskId')
 			$.post('task-delete.php', {id}, response => {fetchTasks()})
 		}
+	})
+
+	$(document).on('click', '.task-item', (e) => {
+		let element = e.target.parentElement.parentElement
+		let id = $(element).attr('taskId')
+		$.post('task-single.php', {id}, response => {console.log(response)})
 	})
 })
