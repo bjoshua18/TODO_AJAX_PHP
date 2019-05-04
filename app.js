@@ -1,5 +1,6 @@
 $(document).ready(() => {
 
+	let edit = false
 	$('#task-result').hide()
 
 	// Esta función se ejecuta en cuanto inicia la app
@@ -37,14 +38,21 @@ $(document).ready(() => {
 	$('#task-form').submit(e => {
 		const postData = {
 			name: $('#name').val(),
-			description: $('#description').val()
+			description: $('#description').val(),
+			id: $('#taskId').val()
 		}
+
+		// Si no estamos editando, la url será 'task-add.php', si no, será 'task-edit.php'
+		let url = !edit ? 'task-add.php' : 'task-edit.php'
 
 		// Podemos usar el método ajax para enviar los datos del task
 		// Pero lo haremos con el método post porque es más corto
-		$.post('task-add.php', postData, response => {
+		$.post(url, postData, response => {
+			console.log(response)
 			// Obtenemos la lista de tareas
 			fetchTasks()
+			// Ya no estamos editando
+			edit = false
 			// Reseteamos el formulario
 			$('#task-form').trigger('reset')
 		})
@@ -63,7 +71,7 @@ $(document).ready(() => {
 				tasks.forEach(task => {
 					template += `
 					<tr taskId="${task.id}">
-						<td>${task.name}</td>
+						<td><a href="#" class="task-item">${task.name}</a></td>
 						<td>${task.description}</td>
 						<td><button class="task-delete btn btn-danger">Delete</button></td>
 					</tr>`;
@@ -79,5 +87,17 @@ $(document).ready(() => {
 			let id = $(element).attr('taskId')
 			$.post('task-delete.php', {id}, response => {fetchTasks()})
 		}
+	})
+
+	$(document).on('click', '.task-item', (e) => {
+		let element = e.target.parentElement.parentElement
+		let id = $(element).attr('taskId')
+		$.post('task-single.php', {id}, response => {
+			const task = JSON.parse(response)
+			$('#name').val(task.name)
+			$('#description').val(task.description)
+			$('#taskId').val(task.id)
+			edit = true
+		})
 	})
 })
