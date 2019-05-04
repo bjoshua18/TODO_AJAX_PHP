@@ -38,7 +38,8 @@ $(document).ready(() => {
 	$('#task-form').submit(e => {
 		const postData = {
 			name: $('#name').val(),
-			description: $('#description').val()
+			description: $('#description').val(),
+			id: $('#taskId').val()
 		}
 
 		// Si no estamos editando, la url será 'task-add.php', si no, será 'task-edit.php'
@@ -47,6 +48,7 @@ $(document).ready(() => {
 		// Podemos usar el método ajax para enviar los datos del task
 		// Pero lo haremos con el método post porque es más corto
 		$.post(url, postData, response => {
+			console.log(response)
 			// Obtenemos la lista de tareas
 			fetchTasks()
 			// Ya no estamos editando
@@ -94,6 +96,7 @@ $(document).ready(() => {
 			const task = JSON.parse(response)
 			$('#name').val(task.name)
 			$('#description').val(task.description)
+			$('#taskId').val(task.id)
 			edit = true
 		})
 	})
