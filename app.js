@@ -1,5 +1,6 @@
 $(document).ready(() => {
 
+	let edit = false
 	$('#task-result').hide()
 
 	// Esta función se ejecuta en cuanto inicia la app
@@ -40,11 +41,16 @@ $(document).ready(() => {
 			description: $('#description').val()
 		}
 
+		// Si no estamos editando, la url será 'task-add.php', si no, será 'task-edit.php'
+		let url = !edit ? 'task-add.php' : 'task-edit.php'
+
 		// Podemos usar el método ajax para enviar los datos del task
 		// Pero lo haremos con el método post porque es más corto
-		$.post('task-add.php', postData, response => {
+		$.post(url, postData, response => {
 			// Obtenemos la lista de tareas
 			fetchTasks()
+			// Ya no estamos editando
+			edit = false
 			// Reseteamos el formulario
 			$('#task-form').trigger('reset')
 		})
@@ -84,6 +90,11 @@ $(document).ready(() => {
 	$(document).on('click', '.task-item', (e) => {
 		let element = e.target.parentElement.parentElement
 		let id = $(element).attr('taskId')
-		$.post('task-single.php', {id}, response => {console.log(response)})
+		$.post('task-single.php', {id}, response => {
+			const task = JSON.parse(response)
+			$('#name').val(task.name)
+			$('#description').val(task.description)
+			edit = true
+		})
 	})
 })
