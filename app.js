@@ -74,11 +74,10 @@ $(document).ready(() => {
 	}
 
 	$(document).on('click', '.task-delete', (e) => {
-		let element = e.target.parentElement.parentElement
-		let id = $(element).attr('taskId')
-		
-		$.post('task-delete.php', {id}, response => {
-			console.log(response)
-		})
+		if(confirm('Are you sure you want to delete it?')) {
+			let element = e.target.parentElement.parentElement
+			let id = $(element).attr('taskId')
+			$.post('task-delete.php', {id}, response => {fetchTasks()})
+		}
 	})
 })
