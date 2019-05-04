@@ -51,24 +51,34 @@ $(document).ready(() => {
 
 		e.preventDefault()
 	})
-})
 
-function fetchTasks() {
-	$.ajax({
-		url: 'task-list.php',
-		type: 'GET',
-		success: response => {
-			let tasks = JSON.parse(response)
-			let template = ''
-			tasks.forEach(task => {
-				template += `
-				<tr>
-					<td>${task.id}</td>
-					<td>${task.name}</td>
-					<td>${task.description}</td>
-				</tr>`;
-			});
-			$('#tasks').html(template)
-		}
-	});
-}
+
+	function fetchTasks() {
+		$.ajax({
+			url: 'task-list.php',
+			type: 'GET',
+			success: response => {
+				let tasks = JSON.parse(response)
+				let template = ''
+				tasks.forEach(task => {
+					template += `
+					<tr taskId="${task.id}">
+						<td>${task.name}</td>
+						<td>${task.description}</td>
+						<td><button class="task-delete btn btn-danger">Delete</button></td>
+					</tr>`;
+				});
+				$('#tasks').html(template)
+			}
+		});
+	}
+
+	$(document).on('click', '.task-delete', (e) => {
+		let element = e.target.parentElement.parentElement
+		let id = $(element).attr('taskId')
+		
+		$.post('task-delete.php', {id}, response => {
+			console.log(response)
+		})
+	})
+})
